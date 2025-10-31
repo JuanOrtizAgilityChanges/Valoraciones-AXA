@@ -11,18 +11,17 @@
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: Arial, sans-serif;
             background-color: #f5f6fa;
         }
-
+        
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            background-color: #f5f6fa;
         }
-
+        
         .header {
             background-color: #00008F;
             padding: 20px;
@@ -30,7 +29,7 @@
             position: relative;
             overflow: hidden;
         }
-
+        
         .header-decoration {
             position: absolute;
             top: -20px;
@@ -41,28 +40,27 @@
             transform: rotate(45deg);
             opacity: 0.3;
         }
-
+        
         .header h1 {
-            margin: 0;
             position: relative;
             z-index: 1;
         }
-
+        
         .header p {
             margin: 5px 0 0 0;
             opacity: 0.9;
             position: relative;
             z-index: 1;
         }
-
+        
         .tabs {
             background-color: white;
             border-bottom: 2px solid #E6E9FF;
             display: flex;
             overflow-x: auto;
         }
-
-        .tab-button {
+        
+        .tab {
             padding: 15px 25px;
             border: none;
             background-color: transparent;
@@ -74,26 +72,18 @@
             transition: all 0.3s;
             white-space: nowrap;
         }
-
-        .tab-button.active {
+        
+        .tab.active {
             background-color: #00008F;
             color: white;
             font-weight: bold;
             border-bottom: 3px solid #FF1721;
         }
-
-        .tab-button:hover {
-            background-color: #E6E9FF;
-        }
-
-        .tab-button.active:hover {
-            background-color: #00008F;
-        }
-
+        
         .content {
             padding: 20px;
         }
-
+        
         .card {
             background-color: white;
             padding: 20px;
@@ -101,48 +91,47 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             margin-bottom: 30px;
         }
-
+        
         .card h3 {
             margin-top: 0;
             color: #2c3e50;
             margin-bottom: 15px;
         }
-
+        
         .chart-container {
             position: relative;
             height: 400px;
-            margin-top: 20px;
         }
-
+        
         .competencia-section {
             margin-bottom: 25px;
         }
-
+        
         .competencia-title {
             color: #00008F;
             margin-bottom: 10px;
             border-bottom: 2px solid #FF1721;
             padding-bottom: 5px;
         }
-
+        
         .comentario {
             margin-bottom: 10px;
             padding-left: 15px;
             border-left: 3px solid #ecf0f1;
         }
-
-        .comentario-texto {
+        
+        .comentario-text {
             margin: 5px 0;
             color: #34495e;
         }
-
+        
         .comentario-autor {
             margin: 5px 0;
             font-size: 12px;
             color: #7f8c8d;
             font-style: italic;
         }
-
+        
         .comentario-general {
             margin-bottom: 15px;
             padding: 15px;
@@ -150,13 +139,13 @@
             border-radius: 6px;
             border-left: 4px solid #FF1721;
         }
-
-        .comentario-general-texto {
+        
+        .comentario-general-text {
             margin: 0 0 8px 0;
             color: #2c3e50;
             line-height: 1.6;
         }
-
+        
         .comentario-general-autor {
             margin: 0;
             font-size: 13px;
@@ -164,25 +153,21 @@
             font-style: italic;
             text-align: right;
         }
-
+        
         .footer {
             padding: 20px;
             text-align: center;
             color: #7f8c8d;
             font-size: 12px;
         }
-
-        .footer p {
+        
+        .leyenda {
             margin: 5px 0;
         }
-
-        .legend-item {
-            display: inline-block;
+        
+        .leyenda-item {
+            display: inline;
             margin: 0 10px;
-        }
-
-        .hidden {
-            display: none;
         }
     </style>
 </head>
@@ -193,17 +178,17 @@
             <h1>Matriz de Competencias Shu-Ha-Ri</h1>
             <p>Dashboard de Evaluación 360° - Product Owners</p>
         </div>
-
+        
         <div class="tabs" id="tabs"></div>
-
-        <div id="content"></div>
-
+        
+        <div class="content" id="content"></div>
+        
         <div class="footer">
             <p>Evaluación basada en el sistema Shu-Ha-Ri</p>
-            <p>
-                <span class="legend-item"><span style="color: #00008F;">■</span> SHU (Maestro Alto)</span>
-                <span class="legend-item"><span style="color: #FF1721;">■</span> HA (Practicante Medio)</span>
-                <span class="legend-item"><span style="color: #FF6B6B;">■</span> RI (Aprendiz Bajo)</span>
+            <p class="leyenda">
+                <span class="leyenda-item"><span style="color: #6C757D;">■</span> SHU (Maestro Alto)</span> |
+                <span class="leyenda-item"><span style="color: #FF1721;">■</span> HA (Practicante Medio)</span> |
+                <span class="leyenda-item"><span style="color: #00008F;">■</span> RI (Aprendiz Bajo)</span>
             </p>
         </div>
     </div>
@@ -234,29 +219,6 @@ Si bien no considero tiene desarrollada la comunicación y liderazgo tal vez ah�
                 }
             }
             return data;
-        }
-
-        function calcularPorcentajes(calificaciones) {
-            const validas = calificaciones.filter(c => !c.includes('No Tengo'));
-            
-            if (validas.length === 0) {
-                return { SHU: 0, HA: 0, RI: 0, total: 0 };
-            }
-            
-            const counts = {
-                SHU: validas.filter(c => c.includes('SHU')).length,
-                HA: validas.filter(c => c.includes('HA')).length,
-                RI: validas.filter(c => c.includes('RI')).length
-            };
-            
-            const total = validas.length;
-            
-            return {
-                SHU: Math.round((counts.SHU / total) * 100),
-                HA: Math.round((counts.HA / total) * 100),
-                RI: Math.round((counts.RI / total) * 100),
-                total: total
-            };
         }
 
         const parsedData = parseCSV(rawData);
@@ -308,36 +270,29 @@ Si bien no considero tiene desarrollada la comunicación y liderazgo tal vez ah�
         });
 
         const personas = Object.keys(personasData);
-        let activeTab = -1;
         let currentChart = null;
 
-        function renderTabs() {
-            const tabsContainer = document.getElementById('tabs');
-            tabsContainer.innerHTML = '';
-
-            const consolidadoTab = document.createElement('button');
-            consolidadoTab.className = 'tab-button' + (activeTab === -1 ? ' active' : '');
-            consolidadoTab.textContent = '📊 Consolidado del Equipo';
-            consolidadoTab.onclick = () => switchTab(-1);
-            tabsContainer.appendChild(consolidadoTab);
-
-            personas.forEach((persona, idx) => {
-                const tab = document.createElement('button');
-                tab.className = 'tab-button' + (activeTab === idx ? ' active' : '');
-                tab.textContent = persona;
-                tab.onclick = () => switchTab(idx);
-                tabsContainer.appendChild(tab);
-            });
-        }
-
-        function switchTab(idx) {
-            activeTab = idx;
-            renderTabs();
-            if (idx === -1) {
-                renderConsolidado();
-            } else {
-                renderPersona(personas[idx]);
+        function calcularPorcentajes(calificaciones) {
+            const validas = calificaciones.filter(c => !c.includes('No Tengo'));
+            
+            if (validas.length === 0) {
+                return { SHU: 0, HA: 0, RI: 0, total: 0 };
             }
+            
+            const counts = {
+                SHU: validas.filter(c => c.includes('SHU')).length,
+                HA: validas.filter(c => c.includes('HA')).length,
+                RI: validas.filter(c => c.includes('RI')).length
+            };
+            
+            const total = validas.length;
+            
+            return {
+                SHU: Math.round((counts.SHU / total) * 100),
+                HA: Math.round((counts.HA / total) * 100),
+                RI: Math.round((counts.RI / total) * 100),
+                total: total
+            };
         }
 
         function renderConsolidado() {
@@ -365,13 +320,11 @@ Si bien no considero tiene desarrollada la comunicación y liderazgo tal vez ah�
 
             const content = document.getElementById('content');
             content.innerHTML = `
-                <div class="content">
-                    <h2 style="margin-bottom: 20px; color: #00008F;">Consolidado del Equipo</h2>
-                    <div class="card">
-                        <h3>Distribución General de Calificaciones Shu-Ha-Ri</h3>
-                        <div class="chart-container">
-                            <canvas id="consolidadoChart"></canvas>
-                        </div>
+                <h2 style="margin-bottom: 20px; color: #00008F;">Consolidado del Equipo</h2>
+                <div class="card">
+                    <h3>Distribución General de Calificaciones Shu-Ha-Ri</h3>
+                    <div class="chart-container">
+                        <canvas id="chartCanvas"></canvas>
                     </div>
                 </div>
             `;
@@ -380,7 +333,7 @@ Si bien no considero tiene desarrollada la comunicación y liderazgo tal vez ah�
                 currentChart.destroy();
             }
 
-            const ctx = document.getElementById('consolidadoChart').getContext('2d');
+            const ctx = document.getElementById('chartCanvas').getContext('2d');
             currentChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -389,20 +342,20 @@ Si bien no considero tiene desarrollada la comunicación y liderazgo tal vez ah�
                         {
                             label: 'SHU (Maestro)',
                             data: consolidado.map(d => d.SHU),
-                            backgroundColor: '#00008F',
-                            stack: 'Stack 0'
+                            backgroundColor: '#6C757D',
+                            stack: 'stack0'
                         },
                         {
                             label: 'HA (Practicante)',
                             data: consolidado.map(d => d.HA),
                             backgroundColor: '#FF1721',
-                            stack: 'Stack 0'
+                            stack: 'stack0'
                         },
                         {
                             label: 'RI (Aprendiz)',
                             data: consolidado.map(d => d.RI),
-                            backgroundColor: '#FF6B6B',
-                            stack: 'Stack 0'
+                            backgroundColor: '#00008F',
+                            stack: 'stack0'
                         }
                     ]
                 },
@@ -412,14 +365,11 @@ Si bien no considero tiene desarrollada la comunicación y liderazgo tal vez ah�
                     plugins: {
                         tooltip: {
                             callbacks: {
-                                footer: function(context) {
-                                    const index = context[0].dataIndex;
-                                    return 'Total evaluaciones del equipo: ' + consolidado[index].total;
+                                afterLabel: function(context) {
+                                    const index = context.dataIndex;
+                                    return 'Total evaluaciones: ' + consolidado[index].total;
                                 }
                             }
-                        },
-                        legend: {
-                            position: 'top'
                         }
                     },
                     scales: {
@@ -458,52 +408,58 @@ Si bien no considero tiene desarrollada la comunicación y liderazgo tal vez ah�
                 });
             });
 
-            let comentariosHTML = '';
+            let competenciasHTML = '';
             competencias.forEach(comp => {
                 const comentarios = personasData[persona].evaluaciones[comp.nombre].comentarios;
                 if (comentarios.length === 0) return;
                 
-                comentariosHTML += `
+                let comentariosHTML = '';
+                comentarios.forEach(comentario => {
+                    comentariosHTML += `
+                        <div class="comentario">
+                            <p class="comentario-text">"${comentario.texto}"</p>
+                            <p class="comentario-autor">— ${comentario.evaluador}</p>
+                        </div>
+                    `;
+                });
+                
+                competenciasHTML += `
                     <div class="competencia-section">
                         <h4 class="competencia-title">${comp.nombre}</h4>
-                        ${comentarios.map(comentario => `
-                            <div class="comentario">
-                                <p class="comentario-texto">"${comentario.texto}"</p>
-                                <p class="comentario-autor">— ${comentario.evaluador}</p>
-                            </div>
-                        `).join('')}
+                        ${comentariosHTML}
                     </div>
                 `;
             });
 
-            let comentariosGeneralesHTML = personasData[persona].comentariosGenerales.map(comentario => `
-                <div class="comentario-general">
-                    <p class="comentario-general-texto">${comentario.texto}</p>
-                    <p class="comentario-general-autor">— ${comentario.evaluador}</p>
-                </div>
-            `).join('');
+            let comentariosGeneralesHTML = '';
+            personasData[persona].comentariosGenerales.forEach(comentario => {
+                comentariosGeneralesHTML += `
+                    <div class="comentario-general">
+                        <p class="comentario-general-text">${comentario.texto}</p>
+                        <p class="comentario-general-autor">— ${comentario.evaluador}</p>
+                    </div>
+                `;
+            });
 
             const content = document.getElementById('content');
             content.innerHTML = `
-                <div class="content">
-                    <h2 style="margin-bottom: 20px; color: #00008F;">${persona}</h2>
-                    
-                    <div class="card">
-                        <h3>Distribución de Calificaciones Shu-Ha-Ri</h3>
-                        <div class="chart-container">
-                            <canvas id="personaChart"></canvas>
-                        </div>
+                <h2 style="margin-bottom: 20px; color: #00008F;">${persona}</h2>
+                
+                <div class="card">
+                    <h3>Distribución de Calificaciones Shu-Ha-Ri</h3>
+                    <div class="chart-container">
+                        <canvas id="chartCanvas"></canvas>
                     </div>
+                </div>
 
-                    <div class="card">
-                        <h3>Comentarios por Competencia</h3>
-                        ${comentariosHTML}
-                    </div>
+                <div class="card">
+                    <h3>Comentarios por Competencia</h3>
+                    ${competenciasHTML}
+                </div>
 
-                    <div class="card">
-                        <h3>Comentarios Generales</h3>
-                        ${comentariosGeneralesHTML}
-                    </div>
+                <div class="card">
+                    <h3>Comentarios Generales</h3>
+                    ${comentariosGeneralesHTML}
                 </div>
             `;
 
@@ -511,7 +467,7 @@ Si bien no considero tiene desarrollada la comunicación y liderazgo tal vez ah�
                 currentChart.destroy();
             }
 
-            const ctx = document.getElementById('personaChart').getContext('2d');
+            const ctx = document.getElementById('chartCanvas').getContext('2d');
             currentChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -520,20 +476,20 @@ Si bien no considero tiene desarrollada la comunicación y liderazgo tal vez ah�
                         {
                             label: 'SHU (Maestro)',
                             data: graficaData.map(d => d.SHU),
-                            backgroundColor: '#00008F',
-                            stack: 'Stack 0'
+                            backgroundColor: '#6C757D',
+                            stack: 'stack0'
                         },
                         {
                             label: 'HA (Practicante)',
                             data: graficaData.map(d => d.HA),
                             backgroundColor: '#FF1721',
-                            stack: 'Stack 0'
+                            stack: 'stack0'
                         },
                         {
                             label: 'RI (Aprendiz)',
                             data: graficaData.map(d => d.RI),
-                            backgroundColor: '#FF6B6B',
-                            stack: 'Stack 0'
+                            backgroundColor: '#00008F',
+                            stack: 'stack0'
                         }
                     ]
                 },
@@ -543,14 +499,11 @@ Si bien no considero tiene desarrollada la comunicación y liderazgo tal vez ah�
                     plugins: {
                         tooltip: {
                             callbacks: {
-                                footer: function(context) {
-                                    const index = context[0].dataIndex;
+                                afterLabel: function(context) {
+                                    const index = context.dataIndex;
                                     return 'Total evaluaciones: ' + graficaData[index].total;
                                 }
                             }
-                        },
-                        legend: {
-                            position: 'top'
                         }
                     },
                     scales: {
@@ -573,7 +526,40 @@ Si bien no considero tiene desarrollada la comunicación y liderazgo tal vez ah�
             });
         }
 
-        // Inicializar
+        function renderTabs() {
+            const tabsContainer = document.getElementById('tabs');
+            let tabsHTML = `
+                <button class="tab active" onclick="selectTab(-1)">📊 Consolidado del Equipo</button>
+            `;
+            
+            personas.forEach((persona, idx) => {
+                tabsHTML += `
+                    <button class="tab" onclick="selectTab(${idx})">${persona}</button>
+                `;
+            });
+            
+            tabsContainer.innerHTML = tabsHTML;
+        }
+
+        function selectTab(index) {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach((tab, idx) => {
+                if (idx === index + 1) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+
+            if (index === -1) {
+                renderConsolidado();
+            } else {
+                renderPersona(personas[index]);
+            }
+        }
+
+        window.selectTab = selectTab;
+
         renderTabs();
         renderConsolidado();
     </script>
